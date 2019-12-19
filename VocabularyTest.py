@@ -160,11 +160,11 @@ def display1top4bottom(images, audio, window_size = screen.window_size):
 
     return sound, [stim1, stim2, stim3, stim4, stim5]
 
-def createBox(top=False, *stims):
+def createBox(stims, top=False):
     if not top:
         box = expyriment.io.TouchScreenButtonBox(stims)
     else:
-        box = expyrimen.io.TouchScreenButtonBox(stims[1:], stims[0])
+        box = expyriment.io.TouchScreenButtonBox(stims[1:], stims[0])
     box.create()
     return box
 
@@ -178,6 +178,7 @@ carre = 'degas-carre-petit.jpg'
 rectangle = 'degas-rectangle.jpg'
 portrait = 'degas-portrait.jpg'
 son = '1.wav'
+boxes = list()
 
 bloc_0 = expyriment.design.Block(name="Entraînement")
 
@@ -186,6 +187,7 @@ audio_0_1, stim_0_1= displayLine4Images([carre, carre, carre,carre],son)
 essai_0_1.add_stimulus(audio_0_1)
 for stim in stim_0_1:
     essai_0_1.add_stimulus(stim)
+box_0_1 = createBox(stim_0_1)
 bloc_0.add_trial(essai_0_1)
 
 essai_0_2 = expyriment.design.Trial()
@@ -193,14 +195,23 @@ audio_0_2, stim_0_2 = displayLine3Images([carre, carre, carre],son)
 essai_0_2.add_stimulus(audio_0_2)
 for stim in stim_0_2:
     essai_0_2.add_stimulus(stim)
+box_0_2 = createBox(stim_0_2)
 bloc_0.add_trial(essai_0_2)
 
 essai_0_3 = expyriment.design.Trial()
-audio_0_3, stim_0_3 = display3top3bottom([carre, carre, carre, carre],son)
+audio_0_3, stim_0_3 = display1top3bottom([rectangle, carre, carre, carre],son)
 essai_0_3.add_stimulus(audio_0_3)
 for stim in stim_0_3:
     essai_0_3.add_stimulus(stim)
+box_0_3 = createBox(stim_0_3, top=True)
 bloc_0.add_trial(essai_0_3)
+
+boxes.append(box_0_1)
+boxes.append(box_0_2)
+boxes.append(box_0_3)
+
+box = iter(boxes)
+
 exp.add_block(bloc_0)
 """
 bloc_1 = expyriment.design.Block(name="Questions")
@@ -340,7 +351,11 @@ expyriment.control.start()
 for block in exp.blocks:
     for trial in block.trials:
         trial.stimuli[0].play()
-        trial.stimuli[1].show()
+        b = next(box)
+        b.show()
         expyriment.control.wait_end_audiosystem()
-        img, resptime = box.wait()
+        img, resptime = b.wait()
+        exp.screen.clear()
+        exp.screen.update()
+        exp.clock.wait(1000)
 expyriment.control.end()

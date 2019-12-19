@@ -160,11 +160,11 @@ def display1top4bottom(images, audio, window_size = screen.window_size):
 
     return sound, [stim1, stim2, stim3, stim4, stim5]
 
-def createBox(top=False, *stims):
+def createBox(stims, top=False):
     if not top:
         box = expyriment.io.TouchScreenButtonBox(stims)
     else:
-        box = expyrimen.io.TouchScreenButtonBox(stims[1:], stims[0])
+        box = expyriment.io.TouchScreenButtonBox(stims[1:], stims[0])
     box.create()
     return box
 
@@ -174,20 +174,20 @@ def displayVideo(video, window_size = screen.window_size):
 
     return video
 
-#box, sound = displayLine4Images(["degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg"],"1.wav")
-#box, sound = displayLine3Images(["degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg"],"1.wav")
-#box, sound = displaySquare(["degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg"],"1.wav")
-#box, sound = display1top3bottom(["degas-rectangle.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg"],"1.wav")
-#box, sound = display1top4bottom(["degas-rectangle.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg"],"1.wav")
-video = displayVideo('dog-in-farm.mpg')
-
+#sound, stim = displayLine4Images(["degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg"],"1.wav")
+#sound, stim = displayLine3Images(["degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg"],"1.wav")
+#sound, stim = displaySquare(["degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg"],"1.wav")
+#sound, stim = display1top3bottom(["degas-rectangle.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg"],"1.wav")
+sound, stim = display1top4bottom(["degas-rectangle.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg"],"1.wav")
+#video = displayVideo('dog-in-farm.mpg')
+box = createBox(stim, top=True)
 expyriment.control.start()
-#sound.play()
-#box.show()
-video.play()
-video.present()
-video.wait_end()
-video.stop()
-#expyriment.control.wait_end_audiosystem()
-#img, resptime = box.wait()
+sound.play()
+box.show()
+#video.play()
+#video.present()
+#video.wait_end()
+#video.stop()
+expyriment.control.wait_end_audiosystem()
+img, resptime = box.wait()
 expyriment.control.end()
