@@ -22,7 +22,7 @@ def _conversion_origin(position, window_size = screen.window_size):
 def displayLine4Images(images, audio, window_size = screen.window_size):
     sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
 
-    margin = round((screen_size[0]/100))
+    margin = round((window_size[0]/100))
 
     image1 = Image.open(images[0])
     image2 = Image.open(images[1])
@@ -52,7 +52,7 @@ def displayLine4Images(images, audio, window_size = screen.window_size):
 def displayLine3Images(images, audio, window_size = screen.window_size):
     sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
 
-    margin = round((screen_size[0]/100)*10)
+    margin = round((window_size[0]/100)*10)
 
     image1 = Image.open(images[0])
     image2 = Image.open(images[1])
@@ -76,12 +76,120 @@ def displayLine3Images(images, audio, window_size = screen.window_size):
 
     return box, sound
 
+def displaySquare(images, audio, window_size = screen.window_size):
+    sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
+
+    margin = round((window_size[0]/100)*8)
+
+    image1 = Image.open(images[0])
+    image2 = Image.open(images[1])
+    image3 = Image.open(images[2])
+    image4 = Image.open(images[3])
+
+    w, h = image1.size
+    box_size = (window_size[0]-2*margin,window_size[1]-2*margin)
+    rest = (box_size[0]-2*w, box_size[1]-2*h) #attention ici 2 et 2
+    gap = round(rest[1]/1) #attention ici 1 et rest[1] !!
+
+    p1 = _conversion_origin((round(window_size[0]/2-gap/2-w/2), round(margin+(h+gap)+h/2)))
+    p2 = _conversion_origin((round(window_size[0]/2+gap/2+w/2), round(margin+(h+gap)+h/2)))
+    p3 = _conversion_origin((round(window_size[0]/2-gap/2-w/2), round(margin+h/2)))
+    p4 = _conversion_origin((round(window_size[0]/2+gap/2+w/2), round(margin+h/2)))
+
+    stim1 = expyriment.stimuli.Picture(images[0], position = p1)
+    stim2 = expyriment.stimuli.Picture(images[1], position = p2)
+    stim3 = expyriment.stimuli.Picture(images[2], position = p3)
+    stim4 = expyriment.stimuli.Picture(images[3], position = p4)
+
+    box = expyriment.io.TouchScreenButtonBox([stim1, stim2, stim3, stim4])
+    box.create()
+
+    return box, sound
+
+def display1top3bottom(images, audio, window_size = screen.window_size):
+    sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
+
+    margin_w = round((window_size[0]/100)*30)
+    margin_h = round((window_size[0]/100)*4)
+
+    image1 = Image.open(images[0])
+    image2 = Image.open(images[1])
+    image3 = Image.open(images[2])
+    image4 = Image.open(images[3])
+
+    w1, h1 = image1.size
+    w, h = image2.size
+    box_size = (window_size[0]-2*margin_w,window_size[1]-2*margin_h)
+    rest = (box_size[0]-3*w, box_size[1]-h-h1) #attention ici 2 et 2
+    gap_w = round(rest[0]/2) #attention ici 2
+    gap_h = round(rest[1]/1)
+
+    p1 = _conversion_origin((round(window_size[0]/2), round(margin_h+h+gap_h+h1/2)))
+    p2 = _conversion_origin((round(window_size[0]/2-gap_w/2-w-w/2), round(margin_h+h/2)))
+    p3 = _conversion_origin((round(window_size[0]/2), round(margin_h+h/2)))
+    p4 = _conversion_origin((round(window_size[0]/2+gap_w/2+w+w/2), round(margin_h+h/2)))
+
+    stim1 = expyriment.stimuli.Picture(images[0], position = p1)
+    stim2 = expyriment.stimuli.Picture(images[1], position = p2)
+    stim3 = expyriment.stimuli.Picture(images[2], position = p3)
+    stim4 = expyriment.stimuli.Picture(images[3], position = p4)
+
+    box = expyriment.io.TouchScreenButtonBox([stim2, stim3, stim4], stim1)
+    box.create()
+
+    return box, sound
+
+def display1top4bottom(images, audio, window_size = screen.window_size):
+    sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
+
+    margin_w = round((window_size[0]/100)*5)
+    margin_h = round((window_size[0]/100)*4)
+
+    image1 = Image.open(images[0])
+    image2 = Image.open(images[1])
+    image3 = Image.open(images[2])
+    image4 = Image.open(images[3])
+    image5 = Image.open(images[4])
+
+    w1, h1 = image1.size
+    w, h = image2.size
+    box_size = (window_size[0]-2*margin_w,window_size[1]-2*margin_h)
+    rest = (box_size[0]-4*w, box_size[1]-h-h1) #attention ici 3 et 1
+    gap_w = round(rest[0]/3) #attention ici 3
+    gap_h = round(rest[1]/1)
+
+    p1 = _conversion_origin((round(window_size[0]/2), round(margin_h+h+gap_h+h1/2)))
+    p2 = _conversion_origin((round(margin_w+0*(w+gap_w)+w/2), round(margin_h+h/2)))
+    p3 = _conversion_origin((round(margin_w+1*(w+gap_w)+w/2), round(margin_h+h/2)))
+    p4 = _conversion_origin((round(margin_w+2*(w+gap_w)+w/2), round(margin_h+h/2)))
+    p5 = _conversion_origin((round(margin_w+3*(w+gap_w)+w/2), round(margin_h+h/2)))
+
+    stim1 = expyriment.stimuli.Picture(images[0], position = p1)
+    stim2 = expyriment.stimuli.Picture(images[1], position = p2)
+    stim3 = expyriment.stimuli.Picture(images[2], position = p3)
+    stim4 = expyriment.stimuli.Picture(images[3], position = p4)
+    stim5 = expyriment.stimuli.Picture(images[4], position = p5)
+
+    box = expyriment.io.TouchScreenButtonBox([stim2, stim3, stim4, stim5], stim1)
+    box.create()
+
+    return box, sound
+
+def displayVideo(video, window_size = screen.window_size):
+    video = expyriment.stimuli.Audio(os.path.join("videos", video))
+
 #box, sound = displayLine4Images(["degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg"],"1.wav")
-box, sound = displayLine3Images(["degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg"],"1.wav")
+#box, sound = displayLine3Images(["degas-portrait.jpg","degas-portrait.jpg","degas-portrait.jpg"],"1.wav")
+#box, sound = displaySquare(["degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg"],"1.wav")
+#box, sound = display1top3bottom(["degas-rectangle.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg"],"1.wav")
+#box, sound = display1top4bottom(["degas-rectangle.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg","degas-carre-petit.jpg"],"1.wav")
+
+video = expyriment.stimuli.Video(os.path.join("videos", "Dog-in-Farm.mp4"))
 
 expyriment.control.start()
-sound.play()
-box.show()
-expyriment.control.wait_end_audiosystem()
-img, resptime = box.wait()
+#sound.play()
+#box.show()
+video.play()
+#expyriment.control.wait_end_audiosystem()
+#img, resptime = box.wait()
 expyriment.control.end()
