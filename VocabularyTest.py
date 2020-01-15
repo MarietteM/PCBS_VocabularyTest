@@ -19,7 +19,7 @@ def _conversion_origin(position, window_size = screen.window_size):
     y = position[1]-round(window_size[1]/2)
     return (x,y)
 
-def displayLine4Images(images, audio, window_size = screen.window_size):
+def displayLine4Images(audio, images, window_size = screen.window_size):
     sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
 
     margin = round((window_size[0]/100))
@@ -44,9 +44,9 @@ def displayLine4Images(images, audio, window_size = screen.window_size):
     stim3 = expyriment.stimuli.Picture(images[2], position = p3)
     stim4 = expyriment.stimuli.Picture(images[3], position = p4)
 
-    return sound, [stim1, stim2, stim3, stim4]
+    return sound, [stim1, stim2, stim3, stim4], False, False, 1
 
-def displayLine3Images(images, audio, window_size = screen.window_size):
+def displayLine3Images(audio, images, window_size = screen.window_size):
     sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
 
     margin = round((window_size[0]/100)*10)
@@ -68,9 +68,9 @@ def displayLine3Images(images, audio, window_size = screen.window_size):
     stim2 = expyriment.stimuli.Picture(images[1], position = p2)
     stim3 = expyriment.stimuli.Picture(images[2], position = p3)
 
-    return sound, [stim1, stim2, stim3]
+    return sound, [stim1, stim2, stim3], False, False, 1
 
-def displaySquare(images, audio, window_size = screen.window_size):
+def _displaySquare(audio, images, window_size = screen.window_size):
     sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
 
     margin = round((window_size[0]/100)*8)
@@ -97,7 +97,7 @@ def displaySquare(images, audio, window_size = screen.window_size):
 
     return sound, [stim1, stim2, stim3, stim4]
 
-def display1top3bottom(images, audio, window_size = screen.window_size):
+def display1top3bottom(audio, images, window_size = screen.window_size):
     sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
 
     margin_w = round((window_size[0]/100)*30)
@@ -125,9 +125,9 @@ def display1top3bottom(images, audio, window_size = screen.window_size):
     stim3 = expyriment.stimuli.Picture(images[2], position = p3)
     stim4 = expyriment.stimuli.Picture(images[3], position = p4)
 
-    return sound, [stim1, stim2, stim3, stim4]
+    return sound, [stim1, stim2, stim3, stim4], False, True, 1
 
-def display1top4bottom(images, audio, window_size = screen.window_size):
+def display1top4bottom(audio, images, window_size = screen.window_size):
     sound = expyriment.stimuli.Audio(os.path.join("sounds", audio))
 
     margin_w = round((window_size[0]/100)*5)
@@ -158,15 +158,127 @@ def display1top4bottom(images, audio, window_size = screen.window_size):
     stim4 = expyriment.stimuli.Picture(images[3], position = p4)
     stim5 = expyriment.stimuli.Picture(images[4], position = p5)
 
-    return sound, [stim1, stim2, stim3, stim4, stim5]
+    return sound, [stim1, stim2, stim3, stim4, stim5], False, True, 1
 
-def createBox(stims, top=False):
-    if not top:
-        box = expyriment.io.TouchScreenButtonBox(stims)
+def display1anim1image(audio, images, window_size = screen.window_size):
+    sound1 = expyriment.stimuli.Audio(os.path.join("sounds", audio[0]))
+    sound2 = expyriment.stimuli.Audio(os.path.join("sounds", audio[1]))
+    stim1 = expyriment.stimuli.Picture(images[0])
+    stim2 = expyriment.stimuli.Picture(images[1])
+    return [sound1, sound2], [stim1, stim2], True, False, 2
+
+def display1anim1top3bottom(audio, images, window_size = screen.window_size):
+    sound1 = expyriment.stimuli.Audio(os.path.join("sounds", audio[0]))
+    sound2 = expyriment.stimuli.Audio(os.path.join("sounds", audio[1]))
+
+    margin_w = round((window_size[0]/100)*30)
+    margin_h = round((window_size[0]/100)*4)
+
+    imageA = Image.open(images[0])
+    image1 = Image.open(images[1])
+    image2 = Image.open(images[2])
+    image3 = Image.open(images[3])
+    image4 = Image.open(images[4])
+
+    w1, h1 = image1.size
+    w, h = image2.size
+    box_size = (window_size[0]-2*margin_w,window_size[1]-2*margin_h)
+    rest = (box_size[0]-3*w, box_size[1]-h-h1) #attention ici 2 et 2
+    gap_w = round(rest[0]/2) #attention ici 2
+    gap_h = round(rest[1]/1)
+
+    pA = _conversion_origin((round(window_size[0]/2), round(margin_h+h+gap_h+h1/2)))
+    p1 = _conversion_origin((round(window_size[0]/2), round(margin_h+h+gap_h+h1/2)))
+    p2 = _conversion_origin((round(window_size[0]/2-gap_w/2-w-w/2), round(margin_h+h/2)))
+    p3 = _conversion_origin((round(window_size[0]/2), round(margin_h+h/2)))
+    p4 = _conversion_origin((round(window_size[0]/2+gap_w/2+w+w/2), round(margin_h+h/2)))
+
+    stimA = expyriment.stimuli.Picture(images[0], position = pA)
+    stim1 = expyriment.stimuli.Picture(images[1], position = p1)
+    stim2 = expyriment.stimuli.Picture(images[2], position = p2)
+    stim3 = expyriment.stimuli.Picture(images[3], position = p3)
+    stim4 = expyriment.stimuli.Picture(images[4], position = p4)
+
+    return [sound1, sound2], [stimA, stim1, stim2, stim3, stim4], True, True, 2
+
+def display1anim1top4bottom(audio, images, window_size = screen.window_size):
+    sound1 = expyriment.stimuli.Audio(os.path.join("sounds", audio[0]))
+    sound2 = expyriment.stimuli.Audio(os.path.join("sounds", audio[1]))
+
+    margin_w = round((window_size[0]/100)*2)
+    margin_h = round((window_size[0]/100)*2)
+
+    imageA = Image.open(images[0])
+    image1 = Image.open(images[1])
+    image2 = Image.open(images[2])
+    image3 = Image.open(images[3])
+    image4 = Image.open(images[4])
+    image5 = Image.open(images[5])
+
+    w1, h1 = image1.size
+    w, h = image2.size
+    box_size = (window_size[0]-2*margin_w,window_size[1]-2*margin_h)
+    rest = (box_size[0]-4*w, box_size[1]-h-h1) #attention ici 3 et 1
+    gap_w = round(rest[0]/3) #attention ici 3
+    gap_h = round(rest[1]/1)
+
+    pA = _conversion_origin((round(window_size[0]/2), round(margin_h+h+gap_h+h1/2)))
+    p1 = _conversion_origin((round(window_size[0]/2), round(margin_h+h+gap_h+h1/2)))
+    p2 = _conversion_origin((round(margin_w+0*(w+gap_w)+w/2), round(margin_h+h/2)))
+    p3 = _conversion_origin((round(margin_w+1*(w+gap_w)+w/2), round(margin_h+h/2)))
+    p4 = _conversion_origin((round(margin_w+2*(w+gap_w)+w/2), round(margin_h+h/2)))
+    p5 = _conversion_origin((round(margin_w+3*(w+gap_w)+w/2), round(margin_h+h/2)))
+
+    stimA = expyriment.stimuli.Picture(images[0], position = pA)
+    stim1 = expyriment.stimuli.Picture(images[1], position = p1)
+    stim2 = expyriment.stimuli.Picture(images[2], position = p2)
+    stim3 = expyriment.stimuli.Picture(images[3], position = p3)
+    stim4 = expyriment.stimuli.Picture(images[4], position = p4)
+    stim5 = expyriment.stimuli.Picture(images[5], position = p5)
+
+    return [sound1, sound2], [stimA, stim1, stim2, stim3, stim4, stim5], True, True, 2
+
+def displaySquareTwice(audio, images, window_size = screen.window_size):
+    sound1, [stim1, stim2, stim3, stim4] = _displaySquare(audio[0], images[0:4])
+    sound2, [stim5, stim6, stim7, stim8] = _displaySquare(audio[1], images[4:])
+
+    return [sound1, sound2], [stim1, stim2, stim3, stim4, stim5, stim6, stim7, stim8], False, False, 2
+
+def display1top3bottomTwice(audio, images, window_size = screen.window_size):
+    sound1, [stim1, stim2, stim3, stim4], anim, top, nb = display1top3bottom(audio[0], images[0:4])
+    sound2, [stim5, stim6, stim7, stim8], anim, top, nb = display1top3bottom(audio[1], images[4:])
+
+    return [sound1, sound2], [stim1, stim2, stim3, stim4, stim5, stim6, stim7, stim8], False, True, 2
+
+
+def createBox(stims, anim, top, nb):
+
+    if nb == 1:
+        if top:
+            box1 = expyriment.io.TouchScreenButtonBox(stims[1:], stims[0])
+        else:
+            box1 = expyriment.io.TouchScreenButtonBox(stims)
+        box2 = None
     else:
-        box = expyriment.io.TouchScreenButtonBox(stims[1:], stims[0])
-    box.create()
-    return box
+        if anim:
+            if top:
+                box1 = expyriment.io.TouchScreenButtonBox(stims[2:], stims[1])
+            else:
+                box1 = expyriment.io.TouchScreenButtonBox(stims[1:], stims[0])
+            box2 = None
+        else:
+            if top:
+                box1 = expyriment.io.TouchScreenButtonBox(stims[1:4], stims[0])
+                box2 = expyriment.io.TouchScreenButtonBox(stims[5:], stims[4])
+            else:
+                box1 = expyriment.io.TouchScreenButtonBox(stims[:4])
+                box2 = expyriment.io.TouchScreenButtonBox(stims[4:])
+
+    box1.create()
+    if box2:
+        box2.create()
+
+    return anim, box1, box2
 
 def displayVideo(video, window_size = screen.window_size):
     video = expyriment.stimuli.Video(os.path.join("videos", video))
@@ -180,181 +292,143 @@ portrait = 'degas-portrait.jpg'
 son = '1.wav'
 boxes = list()
 
-bloc_0 = expyriment.design.Block(name="Entraînement")
+list_of_blocks = ["PRACTISE", "WH-QUESTIONS", "PAST TENSE", "VERB LEARNING", "PREPOSITIONAL PHRASES", "CONVERTING ACTIVE TO PASSIVE", "EMBEDED CLAUSES", "NOUNS", "VERBS", "NOUN LEARNING", "PREPOSITIONS", "ADJECTIVE LEARNING", "CONJUNCTIONS"]
+list_of_lengths = [3, 5, 4, 4, 3, 2, 4, 3, 5, 5, 5, 5, 3]
+list_of_num = [["PR1", "PR2", "PR3"],
+                [x for x in range(1,6)],
+                [x for x in range(6, 10)],
+                [x for x in range(10, 14)],
+                [x for x in range(14,17)],
+                [x for x in range(17,19)],
+                [x for x in range(19,23)],
+                [x for x in range(23,26)],
+                [x for x in range(26,31)],
+                [x for x in range(31,36)],
+                [x for x in range(36,41)],
+                [x for x in range(41,46)],
+                [x for x in range(46,49)]]
+list_of_fonctions = [[displayLine4Images, displayLine3Images, display1top3bottom],
+                        display1top3bottom,
+                        display1anim1image,
+                        display1anim1top3bottom,
+                        displayLine3Images,
+                        display1anim1top3bottom,
+                        display1anim1top4bottom,
+                        displayLine4Images,
+                        displayLine3Images,
+                        displaySquareTwice,
+                        displayLine3Images,
+                        display1top3bottomTwice,
+                        display1top3bottom]
+list_of_images = [[[carre, carre, carre, carre], [carre, carre, carre], [rectangle, carre, carre, carre]],
+                        [rectangle, carre, carre, carre],
+                        [rectangle, rectangle],
+                        [rectangle, rectangle, carre, carre, carre],
+                        [carre, carre, carre],
+                        [rectangle, rectangle, carre, carre, carre],
+                        [rectangle, rectangle, carre, carre, carre, carre],
+                        [carre, carre, carre, carre],
+                        [carre, carre, carre],
+                        [carre, carre, carre, carre, carre, carre, carre, carre],
+                        [portrait, portrait, portrait],
+                        [carre, carre, carre, carre, carre, carre, carre, carre],
+                        [rectangle, carre, carre, carre]]
 
-essai_0_1 = expyriment.design.Trial()
-audio_0_1, stim_0_1= displayLine4Images([carre, carre, carre,carre],son)
-essai_0_1.add_stimulus(audio_0_1)
-for stim in stim_0_1:
-    essai_0_1.add_stimulus(stim)
-box_0_1 = createBox(stim_0_1)
-bloc_0.add_trial(essai_0_1)
+list_of_sounds = [[son, son, son],
+                    son,
+                    [son, son],
+                    [son, son],
+                    son,
+                    [son, son],
+                    [son, son],
+                    son,
+                    son,
+                    [son,son],
+                    son,
+                    [son,son],
+                    son]
 
-essai_0_2 = expyriment.design.Trial()
-audio_0_2, stim_0_2 = displayLine3Images([carre, carre, carre],son)
-essai_0_2.add_stimulus(audio_0_2)
-for stim in stim_0_2:
-    essai_0_2.add_stimulus(stim)
-box_0_2 = createBox(stim_0_2)
-bloc_0.add_trial(essai_0_2)
+#----- TRAINING : BLOCK 0 -----
 
-essai_0_3 = expyriment.design.Trial()
-audio_0_3, stim_0_3 = display1top3bottom([rectangle, carre, carre, carre],son)
-essai_0_3.add_stimulus(audio_0_3)
-for stim in stim_0_3:
-    essai_0_3.add_stimulus(stim)
-box_0_3 = createBox(stim_0_3, top=True)
-bloc_0.add_trial(essai_0_3)
+name0 = list_of_blocks[0]
+length0 = list_of_lengths[0]
+functions0 = list_of_fonctions[0]
+images0 = list_of_images[0]
+sounds0 = list_of_sounds[0]
+print(sounds0)
 
-boxes.append(box_0_1)
-boxes.append(box_0_2)
-boxes.append(box_0_3)
+block0 = expyriment.design.Block(name=name0)
+
+for t in range(length0):
+    trial0 = expyriment.design.Trial()
+    print(sounds0[t])
+    audio0, stim0, anim0, top0, nb0 = functions0[t](sounds0[t], images0[t])
+    trial0.add_stimulus(audio0)
+    for stim in stim0:
+        trial0.add_stimulus(stim)
+    anim0, box10, box20 = createBox(stim0, anim0, top0, nb0)
+    block0.add_trial(trial0)
+    boxes.append([anim0, box10, box20])
+exp.add_block(block0)
+
+#----- TEST : BLOCK 1 TO 12 -----
+
+for b in range(1,13):
+    block = expyriment.design.Block(name=list_of_blocks[b])
+    for t in range(list_of_lengths[b]):
+        trial = expyriment.design.Trial()
+        audio, stimulus, anim, top, nb = list_of_fonctions[b](list_of_sounds[b], list_of_images[b])
+        if isinstance(audio, list):
+            for a in audio:
+                trial.add_stimulus(a)
+        else:
+            trial.add_stimulus(audio)
+        for s in stimulus:
+            trial.add_stimulus(s)
+        anim, box1, box2 = createBox(stimulus, anim, top, nb)
+        block.add_trial(trial)
+        boxes.append([anim, box1, box2])
+    exp.add_block(block)
+
 
 box = iter(boxes)
 
-exp.add_block(bloc_0)
-"""
-bloc_1 = expyriment.design.Block(name="Questions")
-essai_1_1 = expyriment.design.Trial()
-bloc_1.add_trial(essai_1_1)
-essai_1_2 = expyriment.design.Trial()
-bloc_1.add_trial(essai_1_2)
-essai_1_3 = expyriment.design.Trial()
-bloc_1.add_trial(essai_1_3)
-essai_1_4 = expyriment.design.Trial()
-bloc_1.add_trial(essai_1_4)
-essai_1_5 = expyriment.design.Trial()
-bloc_1.add_trial(essai_1_5)
-exp.add_block(bloc_1)
-
-bloc_2 = expyriment.design.Block(name="Passé")
-essai_2_1 = expyriment.design.Trial()
-bloc_2.add_trial(essai_2_1)
-essai_2_2 = expyriment.design.Trial()
-bloc_2.add_trial(essai_2_2)
-essai_2_3 = expyriment.design.Trial()
-bloc_2.add_trial(essai_2_3)
-essai_2_4 = expyriment.design.Trial()
-bloc_2.add_trial(essai_2_4)
-exp.add_block(bloc_2)
-
-bloc_3 = expyriment.design.Block(name="Apprentissage de verbes")
-essai_3_1 = expyriment.design.Trial()
-bloc_3.add_trial(essai_3_1)
-essai_3_2 = expyriment.design.Trial()
-bloc_3.add_trial(essai_3_2)
-essai_3_3 = expyriment.design.Trial()
-bloc_3.add_trial(essai_3_3)
-essai_3_4 = expyriment.design.Trial()
-bloc_3.add_trial(essai_3_4)
-exp.add_block(bloc_3)
-
-bloc_4 = expyriment.design.Block(name="Prépositions")
-essai_4_1 = expyriment.design.Trial()
-bloc_4.add_trial(essai_4_1)
-essai_4_2 = expyriment.design.Trial()
-bloc_4.add_trial(essai_4_2)
-essai_4_3 = expyriment.design.Trial()
-bloc_4.add_trial(essai_4_3)
-exp.add_block(bloc_4)
-
-bloc_5 = expyriment.design.Block(name="Conversion Actif-Passif")
-essai_5_1 = expyriment.design.Trial()
-bloc_5.add_trial(essai_5_1)
-essai_5_2 = expyriment.design.Trial()
-bloc_5.add_trial(essai_5_2)
-exp.add_block(bloc_5)
-
-bloc_6 = expyriment.design.Block(name="Clauses enclavées")
-essai_6_1 = expyriment.design.Trial()
-bloc_6.add_trial(essai_6_1)
-essai_6_2 = expyriment.design.Trial()
-bloc_6.add_trial(essai_6_2)
-essai_6_3 = expyriment.design.Trial()
-bloc_6.add_trial(essai_6_3)
-essai_6_4 = expyriment.design.Trial()
-bloc_6.add_trial(essai_6_4)
-exp.add_block(bloc_6)
-
-bloc_7 = expyriment.design.Block(name="Noms")
-essai_7_1 = expyriment.design.Trial()
-bloc_7.add_trial(essai_7_1)
-essai_7_2 = expyriment.design.Trial()
-bloc_7.add_trial(essai_7_2)
-essai_7_3 = expyriment.design.Trial()
-bloc_7.add_trial(essai_7_3)
-exp.add_block(bloc_7)
-
-bloc_8 = expyriment.design.Block(name="Verbes")
-essai_8_1 = expyriment.design.Trial()
-bloc_8.add_trial(essai_8_1)
-essai_8_2 = expyriment.design.Trial()
-bloc_8.add_trial(essai_8_2)
-essai_8_3 = expyriment.design.Trial()
-bloc_8.add_trial(essai_8_3)
-essai_8_4 = expyriment.design.Trial()
-bloc_8.add_trial(essai_8_4)
-essai_8_5 = expyriment.design.Trial()
-bloc_8.add_trial(essai_8_5)
-exp.add_block(bloc_8)
-
-bloc_9 = expyriment.design.Block(name="Apprentissage de noms")
-essai_9_1 = expyriment.design.Trial()
-bloc_9.add_trial(essai_9_1)
-essai_9_2 = expyriment.design.Trial()
-bloc_9.add_trial(essai_9_2)
-essai_9_3 = expyriment.design.Trial()
-bloc_9.add_trial(essai_9_3)
-essai_9_4 = expyriment.design.Trial()
-bloc_9.add_trial(essai_9_4)
-essai_9_5 = expyriment.design.Trial()
-bloc_9.add_trial(essai_9_5)
-exp.add_block(bloc_9)
-
-bloc_10 = expyriment.design.Block(name="Prépositions")
-essai_10_1 = expyriment.design.Trial()
-bloc_10.add_trial(essai_10_1)
-essai_10_2 = expyriment.design.Trial()
-bloc_10.add_trial(essai_10_2)
-essai_10_3 = expyriment.design.Trial()
-bloc_10.add_trial(essai_10_3)
-essai_10_4 = expyriment.design.Trial()
-bloc_10.add_trial(essai_10_4)
-essai_10_5 = expyriment.design.Trial()
-bloc_10.add_trial(essai_10_5)
-exp.add_block(bloc_10)
-
-bloc_11 = expyriment.design.Block(name="Apprentissage d'adjectifs")
-essai_11_1 = expyriment.design.Trial()
-bloc_11.add_trial(essai_11_1)
-essai_11_2 = expyriment.design.Trial()
-bloc_11.add_trial(essai_11_2)
-essai_11_3 = expyriment.design.Trial()
-bloc_11.add_trial(essai_11_3)
-essai_11_4 = expyriment.design.Trial()
-bloc_11.add_trial(essai_11_4)
-essai_11_5 = expyriment.design.Trial()
-bloc_11.add_trial(essai_11_5)
-exp.add_block(bloc_11)
-
-bloc_12 = expyriment.design.Block(name="Conjonctions")
-essai_12_1 = expyriment.design.Trial()
-bloc_12.add_trial(essai_12_1)
-essai_12_2 = expyriment.design.Trial()
-bloc_12.add_trial(essai_12_2)
-essai_12_3 = expyriment.design.Trial()
-bloc_12.add_trial(essai_12_3)
-exp.add_block(bloc_12)
-"""
 expyriment.control.start()
 
 for block in exp.blocks:
     for trial in block.trials:
-        trial.stimuli[0].play()
         b = next(box)
-        b.show()
-        expyriment.control.wait_end_audiosystem()
-        img, resptime = b.wait()
+        anim = b[0]
+        box1 = b[1]
+        box2 = b[2]
+        if not anim and not box2:
+            trial.stimuli[0].play()
+            box1.show()
+            expyriment.control.wait_end_audiosystem()
+            img, resptime = box1.wait()
+        elif anim and not box2:
+            trial.stimuli[0].play()
+            trial.stimuli[2].present()
+            expyriment.control.wait_end_audiosystem()
+            exp.clock.wait(1000)
+            exp.screen.clear()
+            exp.screen.update()
+            trial.stimuli[1].play()
+            box1.show()
+            expyriment.control.wait_end_audiosystem()
+            img, resptime = box1.wait()
+        else:
+            trial.stimuli[0].play()
+            box1.show()
+            expyriment.control.wait_end_audiosystem()
+            img, resptime = box1.wait()
+            exp.screen.clear()
+            exp.screen.update()
+            exp.clock.wait(1000)
+            trial.stimuli[1].play()
+            box2.show()
+            expyriment.control.wait_end_audiosystem()
+            img, resptime = box2.wait()
         exp.screen.clear()
         exp.screen.update()
         exp.clock.wait(1000)
