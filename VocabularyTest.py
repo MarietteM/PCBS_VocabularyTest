@@ -277,7 +277,7 @@ def createBox(stims, anim, top, nb):
     if box2:
         box2.create()
 
-    return anim, box1, box2
+    return anim, top, nb, box1, box2
 
 def displayVideo(video, window_size = screen.window_size):
     video = expyriment.stimuli.Video(os.path.join("videos", video))
@@ -292,6 +292,8 @@ son = '1.wav'
 video = 'Flower.mp4'
 boxes = list()
 transitions = list()
+
+list_of_stimulus = list()
 
 list_of_blocks = ["PRACTISE", "WH-QUESTIONS", "PAST TENSE", "VERB LEARNING", "PREPOSITIONAL PHRASES", "CONVERTING ACTIVE TO PASSIVE", "EMBEDED CLAUSES", "NOUNS", "VERBS", "NOUN LEARNING", "PREPOSITIONS", "ADJECTIVE LEARNING", "CONJUNCTIONS"]
 
@@ -352,6 +354,20 @@ list_of_transitions = [video,
                         video,
                         video]
 
+list_of_answers = [[2, 3, 3],
+                    [1, 1, 3, 2, 2],
+                    [1, 1, 1, 1],
+                    [2, 1, 3, 2],
+                    [1, 2, 3],
+                    [3, 2],
+                    [2, 4, 1, 3],
+                    [2, 3, 4],
+                    [1, 3, 2, 1, 2],
+                    [1, 3, 2, 2, 4, 3, 3, 1, 2, 4],
+                    [1, 2, 3, 2, 1],
+                    [1, 3, 3, 2, 3, 1, 2, 2, 2, 4],
+                    [1, 1, 3]]
+
 #----- TRAINING : BLOCK 0 -----
 
 name0 = list_of_blocks[0]
@@ -368,9 +384,9 @@ for t in range(length0):
     trial0.add_stimulus(audio0)
     for stim in stim0:
         trial0.add_stimulus(stim)
-    anim0, box10, box20 = createBox(stim0, anim0, top0, nb0)
+    anim0, top0, nb0, box10, box20 = createBox(stim0, anim0, top0, nb0)
     block0.add_trial(trial0)
-    boxes.append([anim0, box10, box20])
+    boxes.append([anim0, top0, nb0, box10, box20])
 exp.add_block(block0)
 
 #----- TEST : BLOCK 1 TO 12 -----
@@ -387,9 +403,9 @@ for b in range(1,13):
             trial.add_stimulus(audio)
         for s in stimulus:
             trial.add_stimulus(s)
-        anim, box1, box2 = createBox(stimulus, anim, top, nb)
+        anim, top, nb, box1, box2 = createBox(stimulus, anim, top, nb)
         block.add_trial(trial)
-        boxes.append([anim, box1, box2])
+        boxes.append([anim, top, nb, box1, box2])
     exp.add_block(block)
 
 #----- TRANSITIONS : VIDEO -----
@@ -405,6 +421,15 @@ tran = iter(transitions)
 
 
 #---------- MAIN ----------
+def save_data(block_name, trial_id, trial_stim, img, anim, top, nb):
+    for i in range(len(trial_stim)):
+        if img == trial_stim[i]:
+            response = i - top - anim - nb + 1
+            if response >= 5:
+                response-=4
+            exp.data.add([block_name, trial_id, response])
+
+exp.add_data_variable_names(['block', 'trial', 'response'])
 
 expyriment.control.start()
 
@@ -416,14 +441,17 @@ for block in exp.blocks:
 
         b = next(box)
         anim = b[0]
-        box1 = b[1]
-        box2 = b[2]
+        top = b[1]
+        nb = b[2]
+        box1 = b[3]
+        box2 = b[4]
 
         if not anim and not box2:
             trial.stimuli[0].play()
             box1.show()
             expyriment.control.wait_end_audiosystem()
             img, resptime = box1.wait()
+            save_data(block.name, trial.id, trial.stimuli, img, anim, top, nb)
 
         elif anim and not box2:
             trial.stimuli[0].play()
@@ -436,19 +464,22 @@ for block in exp.blocks:
             box1.show()
             expyriment.control.wait_end_audiosystem()
             img, resptime = box1.wait()
+            save_data(block.name, trial.id, trial.stimuli, img, anim, top, nb)
 
         else:
             trial.stimuli[0].play()
             box1.show()
             expyriment.control.wait_end_audiosystem()
-            img, resptime = box1.wait()
+            img1, resptime = box1.wait()
             exp.screen.clear()
             exp.screen.update()
             exp.clock.wait(1000)
             trial.stimuli[1].play()
             box2.show()
             expyriment.control.wait_end_audiosystem()
-            img, resptime = box2.wait()
+            img2, resptime = box2.wait()
+            save_data(block.name, trial.id, trial.stimuli, img1, anim, top, nb)
+            save_data(block.name, trial.id, trial.stimuli, img2, anim, top, nb)
 
         exp.screen.clear()
         exp.screen.update()
@@ -467,3 +498,5 @@ for block in exp.blocks:
     exp.clock.wait(2000)
 
 expyriment.control.end()
+
+expyriment.misc.data_preprocessing.write_concatenated_data(data_folder = 'data', file_name = 'VocabularyTest', output_file = 'results.csv' )
