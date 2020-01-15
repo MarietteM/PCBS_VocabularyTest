@@ -250,7 +250,6 @@ def display1top3bottomTwice(audio, images, window_size = screen.window_size):
 
     return [sound1, sound2], [stim1, stim2, stim3, stim4, stim5, stim6, stim7, stim8], False, True, 2
 
-
 def createBox(stims, anim, top, nb):
 
     if nb == 1:
@@ -290,23 +289,14 @@ carre = 'degas-carre-petit.jpg'
 rectangle = 'degas-rectangle.jpg'
 portrait = 'degas-portrait.jpg'
 son = '1.wav'
+video = 'Flower.mp4'
 boxes = list()
+transitions = list()
 
 list_of_blocks = ["PRACTISE", "WH-QUESTIONS", "PAST TENSE", "VERB LEARNING", "PREPOSITIONAL PHRASES", "CONVERTING ACTIVE TO PASSIVE", "EMBEDED CLAUSES", "NOUNS", "VERBS", "NOUN LEARNING", "PREPOSITIONS", "ADJECTIVE LEARNING", "CONJUNCTIONS"]
+
 list_of_lengths = [3, 5, 4, 4, 3, 2, 4, 3, 5, 5, 5, 5, 3]
-list_of_num = [["PR1", "PR2", "PR3"],
-                [x for x in range(1,6)],
-                [x for x in range(6, 10)],
-                [x for x in range(10, 14)],
-                [x for x in range(14,17)],
-                [x for x in range(17,19)],
-                [x for x in range(19,23)],
-                [x for x in range(23,26)],
-                [x for x in range(26,31)],
-                [x for x in range(31,36)],
-                [x for x in range(36,41)],
-                [x for x in range(41,46)],
-                [x for x in range(46,49)]]
+
 list_of_fonctions = [[displayLine4Images, displayLine3Images, display1top3bottom],
                         display1top3bottom,
                         display1anim1image,
@@ -320,6 +310,7 @@ list_of_fonctions = [[displayLine4Images, displayLine3Images, display1top3bottom
                         displayLine3Images,
                         display1top3bottomTwice,
                         display1top3bottom]
+
 list_of_images = [[[carre, carre, carre, carre], [carre, carre, carre], [rectangle, carre, carre, carre]],
                         [rectangle, carre, carre, carre],
                         [rectangle, rectangle],
@@ -347,6 +338,19 @@ list_of_sounds = [[son, son, son],
                     son,
                     [son,son],
                     son]
+list_of_transitions = [video,
+                        video,
+                        video,
+                        video,
+                        video,
+                        video,
+                        video,
+                        video,
+                        video,
+                        video,
+                        video,
+                        video,
+                        video]
 
 #----- TRAINING : BLOCK 0 -----
 
@@ -355,13 +359,11 @@ length0 = list_of_lengths[0]
 functions0 = list_of_fonctions[0]
 images0 = list_of_images[0]
 sounds0 = list_of_sounds[0]
-print(sounds0)
 
 block0 = expyriment.design.Block(name=name0)
 
 for t in range(length0):
     trial0 = expyriment.design.Trial()
-    print(sounds0[t])
     audio0, stim0, anim0, top0, nb0 = functions0[t](sounds0[t], images0[t])
     trial0.add_stimulus(audio0)
     for stim in stim0:
@@ -390,22 +392,39 @@ for b in range(1,13):
         boxes.append([anim, box1, box2])
     exp.add_block(block)
 
+#----- TRANSITIONS : VIDEO -----
+
+for t in list_of_transitions:
+    transition = displayVideo(t)
+    transitions.append(transition)
+
+#----- ITERATORS -----
 
 box = iter(boxes)
+tran = iter(transitions)
+
+
+#---------- MAIN ----------
 
 expyriment.control.start()
 
 for block in exp.blocks:
+
+    t = next(tran)
+
     for trial in block.trials:
+
         b = next(box)
         anim = b[0]
         box1 = b[1]
         box2 = b[2]
+
         if not anim and not box2:
             trial.stimuli[0].play()
             box1.show()
             expyriment.control.wait_end_audiosystem()
             img, resptime = box1.wait()
+
         elif anim and not box2:
             trial.stimuli[0].play()
             trial.stimuli[2].present()
@@ -417,6 +436,7 @@ for block in exp.blocks:
             box1.show()
             expyriment.control.wait_end_audiosystem()
             img, resptime = box1.wait()
+
         else:
             trial.stimuli[0].play()
             box1.show()
@@ -429,7 +449,21 @@ for block in exp.blocks:
             box2.show()
             expyriment.control.wait_end_audiosystem()
             img, resptime = box2.wait()
+
         exp.screen.clear()
         exp.screen.update()
         exp.clock.wait(1000)
+
+    exp.screen.clear()
+    exp.screen.update()
+    expyriment.control.stop_audiosystem()
+    t.play()
+    expyriment.control.start_audiosystem()
+    t.present()
+    t.wait_end()
+    t.stop()
+    exp.screen.clear()
+    exp.screen.update()
+    exp.clock.wait(2000)
+
 expyriment.control.end()
