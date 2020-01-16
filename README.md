@@ -9,7 +9,22 @@ Ce code est aussi celui que je suis amenée à écrire lors de mon stage.
 
 ## But
 
-Le but de ce code est de fournir une première version d'un test de vocabulaire pour des enfants âgés de 3 à 5 ans. Ce test doit être relativement court (15 voire 20min). Le principe est de présenter une bande audio pour poser une question et de choisir la réponse parmi plusieurs images. Une animation ou une image sera présente pendant la question. Il existe plusieurs dispositions d'images pour ce test, et mon but, dans ce projet, est de les créer afin de pouvoir intégrer les images 'réelles' (celles que nous allons utiliser pour rendre le test fonctionnel).
+### But du stage
+
+Mons stage consiste créer un test de vocabulaire pour enfants de 3 à 5 ans en français. Plus précisément, cette démarche s'insipire d'un test pré-existant qui s'appelle le QUILS (Quick Interactive Language Screener). Il s'agit d'un test de vocabulaire anglo-saxons pour enfants de 3 à 5 ans qui a été développé par Roberta M. Golinkoff, Jill de Villiers, Kathy Hirsh-Pasek, Aquiles Iglesias et Mary S. Wilson en 2017. 
+
+Le but de mon stage est de fournir l'équivalent de ce test en français. J'ai donc reproduit la structure du test QUILS pour faire une base au test que nous allons développer en français.
+
+Pour plus d'informations sur le QUILS :
+https://quilscreener.com/
+
+### But du code
+
+Le but de ce code est de fournir une première version du test, un prototype. C'est-à-dire que les stimulus utilisés seront toujours les mêmes.
+
+Le principe est de présenter une bande audio pour poser une question et de choisir la réponse parmi plusieurs images. Une animation ou une image sera présente pendant la question. Il existe plusieurs dispositions d'images pour ce test, et mon but, dans ce projet, est de les créer afin de pouvoir intégrer les images 'réelles' (celles que nous allons utiliser pour rendre le test fonctionnel).
+
+
 Pour cela, j'utilise le module expyriment : je scinde le test en plusieurs blocs (qui correspondront à différents types de vocabulaire, comme le vocabulaire des noms, le vocabulaire des verbes, etc). Dans cette version du code, j'utilise toujours la même image mais qui a différentes formes (carré, portrait, etc), en attendant l'intégration des images 'réelles'. 
 
 ## Objectifs
@@ -69,10 +84,7 @@ L'exécution du code va amener la création de :
 
 # Informations générales sur le test
 
-Le test consiste à reproduire un test pré-existant qui s'appelle le QUILS. Il s'agit d'un test de vocabulaire anglo-saxons pour enfants de 3 à 5 ans. Le but de mon stage est de fournir l'équivalent de ce test en français. J'ai donc reproduit la structure du test QUILS.
 
-Pour plus d'informations sur ce test :
-https://quilscreener.com/
 
 Le test doit être affiché en plein écran, et la souris doit rester apparente.
 
