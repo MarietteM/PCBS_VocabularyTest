@@ -67,6 +67,32 @@ L'exécution du code va amener la création de :
 - un fichier propres à la manière dont j'ai codé le test, à savoir
    - un fichier results.csv, contenant le récapitulatif des réponses fournies par le sujet
 
-# Informations plus précises sur le code
+# Informations générales sur le test
+
+Le test consiste à reproduire un test pré-existant qui s'appelle le QUILS. Il s'agit d'un test de vocabulaire anglo-saxons pour enfants de 3 à 5 ans. Le but de mon stage est de fournir l'équivalent de ce test en français. J'ai donc reproduit la structure du test QUILS.
+
+Pour plus d'informations sur ce test :
+https://quilscreener.com/
+
+Le test doit être affiché en plein écran, et la souris doit rester apparente.
+
+## Blocs
+
+Le test est composé d'un bloc d'entraînement et de 12 blocs de test. 
+
+Chaque bloc a une thématique, et elles sont les suivantes (dans l'ordre) :
+0. Entraînement (PRACTISE)
+1. Questions (WH-QUESTIONS)
+2. Passé (PAST TENSE)
+3. Apprentissage des verbes (VERB LEARNING)
+4. Phrases prépositionnelles (PREPOSITIONAL PHRASES)
+5. Conversions actif-passif (CONVERTING ACTIVE TO PASSIVE)
+6. Clauses enclavées (EMBEDED CLAUSES)
+7. Noms (NOUNS)
+8. Verbes (VERBS)
+9. Apprentissage des noms (NOUN LEARNING)
+10. Prépositions (PREPOSITIONS)
+11. Apprentissage des adjectifs (ADJECTIVE LEARNING)
+12. Conjonctions (CONJUNCTIONS)
 
 
