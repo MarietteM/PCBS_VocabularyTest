@@ -66,6 +66,8 @@ Le code qui permet de lancer le test est : TestVocabulaire.py
 
 Il suffit juste de l'exécuter dans la console, sans ajout d'arguments supplémentaires. 
 
+N.B. : l'étape "Preparing experiment" est assez longue (sur mon ordinateur en tout cas)
+
 # Interface
 
 Ceci va provoquer l'affichage en plein écran du test.
