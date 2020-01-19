@@ -42,7 +42,7 @@ Chaque bloc a une thématique, et elles sont les suivantes (dans l'ordre) :
    11. Apprentissage des adjectifs (ADJECTIVE LEARNING)
    12. Conjonctions (CONJUNCTIONS)
 
-Chaque bloc est de longueur variables, c'est-à-dire qu'ils n'ont pas tous le même nombre d'essais.
+Chaque bloc est de longueur variable, c'est-à-dire qu'ils n'ont pas tous le même nombre d'essais.
 
 Chaque bloc consiste en un type de présentation des stimuli, sauf le bloc d'entraînement qui est la succession de trois affichages différents.
 
@@ -52,17 +52,17 @@ Entre chaque bloc, une vidéo de transition est présentée.
 
 ## But du code
 
-Le but de ce code est de fournir une première version du test, un prototype. C'est-à-dire que les stimuli utilisés sont toujours les mêmes et ne sont pas ceux qui seront utilisés pour faire passer ce test. En l'occurence, j'utilise toujours des images du même tableau mais qui ont chacune une forme différente (carré, portrait, etc), en attendant l'intégration des images 'réelles'.
+Le but de ce code est de fournir une première version du test, un prototype. C'est-à-dire que les stimuli utilisés sont toujours les mêmes et ne sont pas ceux qui seront utilisés pour faire passer ce test. En l'occurence, j'utilise toujours la même bande son, la même vidéo et des images du même tableau mais qui ont chacune une forme différente (carré, portrait, etc), en attendant l'intégration des sons, vidéos et images 'réels'.
 
 ## Langage utilisé
 
-Pour coder ce test, j'utiliserai Python, et plus particulièrement le module expyriment.
+Pour coder ce test, j'ai utilisé Python, et plus particulièrement le module expyriment.
 
 ## Fonctionnement du code
 
 # Exécution
 
-Le code qui permet de lancer le test est : VocabularyTest.py
+Le code qui permet de lancer le test est : TestVocabulaire.py
 
 Il suffit juste de l'exécuter dans la console, sans ajout d'arguments supplémentaires. 
 
@@ -76,7 +76,7 @@ Pour quitter le test à tout moment, il suffira d'appuyer sur la touche 'echap' 
 
 # Fichiers nécessaires
 
-Pour pouvoir tourner, dans le dossier qui contient VocabularyTest.py, il doit y avoir nécessairement :
+Pour pouvoir tourner, dans le dossier qui contient TestVocabulaire.py, il doit y avoir nécessairement :
 - les images suivantes :
    - degas-carre-petit.jpg
    - degas-portrait.jpg
@@ -140,7 +140,7 @@ Pour reprendre l'exemple de la ligne de 3 images, ça donne :
       - Pour la 2ème : marge + longueur de l'image + écart + longueur de l'image divisée par deux
       - Pour la 3ème : marge + longueur de l'image + écart + longueur de l'image + écart + longueur de l'image divisée par deux
 
-En effet, la position d'une image est celle de son centre (d'où les longueurs d'image divisée par deux), et je pars du principe que chaque image aura les mêmes dimensions. 
+En effet, la position d'une image est celle de son centre (d'où les longueurs d'images divisées par deux), et je pars du principe que toutes les images cliquables auront les mêmes dimensions. 
 
 Enfin, cette manière de calculer les positions n'est cependant pas celle de expyriment puisqu'il utilise comme origine le centre de l'écran. Alors j'ai créé une fonction _conversion_origin pour pouvoir faire la conversion entre la manière dont je réfléchissais pour placer mes images et la manière dont expyriment place les images. C'est ma première fonction utilitaire.
 
@@ -170,7 +170,7 @@ Dans le QUILS, une image est présentée mais selon l'endroit où on clique sur 
 
 J'ai su mettre en oeuvre mon test en version prototype donc je suis très satisfaite. Je ne pensais pas aller aussi loin dans mes objectifs (intégrer les audios, intégrer les transitions vidéos, enregistrer les données). 
 
-J'ai su appréhender plusieurs fonctionnalités du module expyriment mais je n'ai pas tout découvert et il est tout à fait possible que j'ai trouvé des moyens détournés pour arriver à mes fins (je pense au placement de mes images et à l'enregistrement des réponses, notamment) alors qu'il existait des fonctions toutes faites du module que je n'ai pas trouvées. Et il est sûr que j'ai encore des améliorations à faire (dont certaines que je n'ai pas détéctées), des maladresses à corriger et de l'optimisation à apporter. Cependant, j'ai déjà essayé de mettre le doigt sur les points à améliorer :
+J'ai su appréhender plusieurs fonctionnalités du module expyriment mais je n'ai pas tout découvert et il est tout à fait possible que j'aie trouvé des moyens détournés pour arriver à mes fins (je pense au placement de mes images et à l'enregistrement des réponses, notamment) alors qu'il existait des fonctions toutes faites du module que je n'ai pas trouvées. Et il est sûr que j'ai encore des améliorations à faire (dont certaines que je n'ai pas détéctées), des maladresses à corriger et de l'optimisation à apporter. Cependant, j'ai déjà essayé de mettre le doigt sur les points à améliorer :
 
 ## Améliorations possibles
 
